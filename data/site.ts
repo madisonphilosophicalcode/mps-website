@@ -11,5 +11,5 @@ export const site = {
   instagramUrl: "https://www.instagram.com/madisonphilosophicalsociety",
   whatsappUrl: "https://chat.whatsapp.com/DIi3m9tgHB04sGjOefDfmI",
   email: "madisonphilosophicalsociety@gmail.com",
-  mailingListUrl: "https://forms.gle/Aktie2gNF9GeqXf5A",
+  mailingListUrl: "/subscribe",
 };

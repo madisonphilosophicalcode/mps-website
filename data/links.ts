@@ -13,7 +13,7 @@ export interface BioSocialLink {
 }
 
 export const bioLinks: BioLink[] = [
-  { label: "Join Our Email List", href: site.mailingListUrl, external: true },
+  { label: "Join Our Email List", href: site.mailingListUrl },
   { label: "Meetings & Calendar", href: "/calendar" },
   { label: "Agora Journal", href: "/agora" },
   { label: "Resources", href: "/resources" },
