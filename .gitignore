@@ -12,6 +12,10 @@
 /.next/
 /out/
 
+# sanity studio deploy output
+/dist/
+/.sanity/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
