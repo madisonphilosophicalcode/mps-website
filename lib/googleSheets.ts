@@ -5,8 +5,8 @@ const SPREADSHEET_ID = "1nlEZmswrdUOn97ggMu48_cvtqiC53COsDwfUlCNRGTo";
 const SHEETS_API_BASE = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}`;
 
 const HEADER_ROWS = 1;
-const SUBSCRIBED_VALUE = "1";
-const UNSUBSCRIBED_VALUE = "0";
+const SUBSCRIBED_VALUE = 1;
+const UNSUBSCRIBED_VALUE = 0;
 
 let cachedAuthClient: JWT | null = null;
 let cachedSheetTitle: string | null = null;
@@ -71,7 +71,7 @@ async function getRows(auth: JWT): Promise<RowLookup> {
 
 // a blank status means the row predates this column and is treated as subscribed
 function isUnsubscribed(status: string): boolean {
-  return status === UNSUBSCRIBED_VALUE;
+  return status === String(UNSUBSCRIBED_VALUE);
 }
 
 export type SubscribeResult = "added" | "resubscribed" | "already_subscribed";
