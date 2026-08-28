@@ -14,6 +14,7 @@ const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const MONTH_FORMAT = new Intl.DateTimeFormat("en-US", {
   month: "long",
   year: "numeric",
+  timeZone: "UTC",
 });
 
 function pad(n: number): string {
@@ -46,17 +47,17 @@ export default function CalendarGrid({
   const termEndDate = new Date(termEnd);
 
   const [cursor, setCursor] = useState({
-    year: termStartDate.getFullYear(),
-    month: termStartDate.getMonth(),
+    year: termStartDate.getUTCFullYear(),
+    month: termStartDate.getUTCMonth(),
   });
 
   const minIndex = monthIndex(
-    termStartDate.getFullYear(),
-    termStartDate.getMonth(),
+    termStartDate.getUTCFullYear(),
+    termStartDate.getUTCMonth(),
   );
   const maxIndex = monthIndex(
-    termEndDate.getFullYear(),
-    termEndDate.getMonth(),
+    termEndDate.getUTCFullYear(),
+    termEndDate.getUTCMonth(),
   );
   const currentIndex = monthIndex(cursor.year, cursor.month);
 
@@ -71,13 +72,17 @@ export default function CalendarGrid({
     eventsByDate.set(key, list);
   }
 
-  const firstOfMonth = new Date(cursor.year, cursor.month, 1);
-  const daysInMonth = new Date(cursor.year, cursor.month + 1, 0).getDate();
-  const leadingBlanks = firstOfMonth.getDay();
+  const firstOfMonth = new Date(Date.UTC(cursor.year, cursor.month, 1));
+  const daysInMonth = new Date(
+    Date.UTC(cursor.year, cursor.month + 1, 0),
+  ).getUTCDate();
+  const leadingBlanks = firstOfMonth.getUTCDay();
 
   const prevMonth = cursor.month === 0 ? 11 : cursor.month - 1;
   const prevYear = cursor.month === 0 ? cursor.year - 1 : cursor.year;
-  const daysInPrevMonth = new Date(prevYear, prevMonth + 1, 0).getDate();
+  const daysInPrevMonth = new Date(
+    Date.UTC(prevYear, prevMonth + 1, 0),
+  ).getUTCDate();
 
   const nextMonth = cursor.month === 11 ? 0 : cursor.month + 1;
   const nextYear = cursor.month === 11 ? cursor.year + 1 : cursor.year;
