@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --color-bg: #e8e2d6;
+  --color-ink: #1c1c1c;
+  --color-panel: #1c1c1c;
+  --color-cream: #e8e2d6;
+  --color-maroon: #490e0e;
+  --color-gold: #b19c72;
+}
+
+.dark {
+  --color-bg: #131110;
+  --color-ink: #e8e2d6;
+  --color-panel: #29251f;
+  --color-maroon: #c1443c;
+}
+
+@theme inline {
+  --color-bg: var(--color-bg);
+  --color-ink: var(--color-ink);
+  --color-panel: var(--color-panel);
+  --color-cream: var(--color-cream);
+  --color-maroon: var(--color-maroon);
+  --color-gold: var(--color-gold);
+  --font-serif: var(--font-playfair-display);
+  --font-mono: var(--font-jetbrains-mono);
+
+  /* Type sizes used across the site that fall outside Tailwind's default
+     scale (12/14/16/18/20/24/36/48px already map to text-xs..text-5xl). */
+  --text-9: 0.5625rem;
+  --text-10: 0.625rem;
+  --text-11: 0.6875rem;
+  --text-13: 0.8125rem;
+  --text-15: 0.9375rem;
+  --text-22: 1.375rem;
+  --text-26: 1.625rem;
+  --text-28: 1.75rem;
+  --text-32: 2rem;
+  --text-40: 2.5rem;
+}
+
+html {
+  background-color: var(--color-panel);
+  overscroll-behavior-y: none;
+}
+
+body {
+  color: var(--color-ink);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+* {
+  transition-property: background-color, border-color, color;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
+}
