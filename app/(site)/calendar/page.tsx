@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import type { Metadata } from "next";
 import PageHero from "@/components/PageHero";
 import Button from "@/components/Button";
+import CalendarLegend from "@/components/calendar/CalendarLegend";
 import MeetingsCalendarSection from "@/components/calendar/MeetingsCalendarSection";
 import MeetingsCalendarSkeleton from "@/components/calendar/MeetingsCalendarSkeleton";
 import { CALENDAR_SUBSCRIBE_URL } from "@/lib/googleCalendar";
@@ -19,6 +20,7 @@ export default function MeetingsPage() {
       <PageHero title="CALENDAR" />
       <p className="font-mono text-sm text-gold italic">{term.label}</p>
       <div className="flex w-full max-w-[900px] flex-col gap-6">
+        <CalendarLegend />
         <Suspense fallback={<MeetingsCalendarSkeleton />}>
           <MeetingsCalendarSection />
         </Suspense>

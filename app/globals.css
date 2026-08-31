@@ -9,6 +9,7 @@
   --color-cream: #e8e2d6;
   --color-maroon: #490e0e;
   --color-gold: #b19c72;
+  --color-navy: #2d4356;
 }
 
 .dark {
@@ -16,6 +17,7 @@
   --color-ink: #e8e2d6;
   --color-panel: #29251f;
   --color-maroon: #c1443c;
+  --color-navy: #5b84a8;
 }
 
 @theme inline {
@@ -25,6 +27,7 @@
   --color-cream: var(--color-cream);
   --color-maroon: var(--color-maroon);
   --color-gold: var(--color-gold);
+  --color-navy: var(--color-navy);
   --font-serif: var(--font-playfair-display);
   --font-mono: var(--font-jetbrains-mono);
 

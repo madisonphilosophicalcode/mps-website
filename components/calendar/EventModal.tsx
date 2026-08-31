@@ -9,6 +9,7 @@ import {
   parseMeetingType,
   meetingTypeLabels,
   meetingTypeDotColor,
+  cleanEventTitle,
 } from "@/lib/eventCategory";
 
 const FOCUSABLE_SELECTOR =
@@ -122,7 +123,7 @@ export default function EventModal({
               id="event-modal-title"
               className="pr-8 font-serif text-28 text-cream italic"
             >
-              {event.title}
+              {cleanEventTitle(event.title)}
             </h2>
             <p className="mt-2 font-mono text-sm text-gold italic">
               {formatWhen(event)}

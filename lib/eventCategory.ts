@@ -1,31 +1,96 @@
-export type EventCategory = "meeting" | "reading" | "other";
+export type EventCategory = "meeting" | "board" | "reading" | "other";
 
 /**
- * Reading Group is checked before the generic "meeting" match since titles
- * like "MPS Reading Group" would otherwise also satisfy a loose MPS/meeting
- * check. Anything unmatched (including Movie Night) falls into "other".
+ * Strips a leading "MPS" prefix for display. The prefix disambiguates MPS
+ * events on a personal Google Calendar, but every event on this site's
+ * calendar is already an MPS event, so it's dropped here to save space in
+ * the title. Only matches "MPS" as a whole word (not "MPSA" etc.), and
+ * falls back if stripping would leave the title empty. Used everywhere
+ * titles are shown, including the event detail modal. "Meeting:" is
+ * deliberately left in place (e.g. "MPS Meeting: Free Will" -> "Meeting:
+ * Free Will"): the grid is a stranger's first look at the page, before
+ * they've learned what the chip colors mean, so the word is doing real
+ * self-description work there, not just taking up space.
  */
+export function cleanEventTitle(title: string): string {
+  const stripped = title.replace(/^mps\b[\s\-:–—]*/i, "").trim();
+  return stripped.length > 0 ? stripped : title;
+}
+
+interface CategoryRule {
+  category: Exclude<EventCategory, "other">;
+  test: (title: string) => boolean;
+}
+
+/**
+ * Checked in order, most specific first. "Board Meeting" and "MPS Reading
+ * Group" both contain "meeting"-adjacent substrings that the generic
+ * "meeting" rule would otherwise swallow, so it has to run last. Add new
+ * categories above the "meeting" rule, not below it.
+ */
+const CATEGORY_RULES: CategoryRule[] = [
+  { category: "reading", test: (t) => t.includes("reading group") },
+  { category: "board", test: (t) => t.includes("board meeting") },
+  { category: "meeting", test: (t) => t.includes("meeting") },
+];
+
 export function categorizeEvent(title: string): EventCategory {
   const t = title.toLowerCase();
-  if (t.includes("reading group")) return "reading";
-  if (t.includes("meeting")) return "meeting";
-  return "other";
+  return CATEGORY_RULES.find((rule) => rule.test(t))?.category ?? "other";
 }
 
 export interface CategoryStyle {
+  /** Solid, filled treatment. Only "meeting" actually renders with this. */
   chipClass: string;
+  /**
+   * Outlined, lower-visual-weight treatment for everything that isn't the
+   * flagship meeting, so importance is signaled by weight/fill (robust,
+   * doesn't rely on hue discrimination) rather than by tuning each color to
+   * "not pop too much."
+   */
+  secondaryClass: string;
+  /** Small swatch shown in the legend; mirrors chipClass vs secondaryClass. */
+  swatchClass: string;
 }
 
 export const categoryStyles: Record<EventCategory, CategoryStyle> = {
   meeting: {
-    chipClass: "bg-panel text-cream hover:bg-neutral-700",
+    chipClass: "bg-cream text-ink border border-ink/25 hover:bg-[#d9d2c2]",
+    secondaryClass: "border border-ink/40 text-ink/70 hover:border-ink",
+    swatchClass: "bg-cream border border-ink/40",
+  },
+  board: {
+    chipClass: "bg-navy text-cream hover:bg-[#3f5c78]",
+    secondaryClass: "border border-navy/50 text-ink/70 hover:border-navy",
+    swatchClass: "border border-navy/70",
   },
   reading: {
     chipClass: "bg-maroon text-cream hover:bg-[#571414]",
+    secondaryClass: "border border-maroon/50 text-ink/70 hover:border-maroon",
+    swatchClass: "border border-maroon/70",
   },
   other: {
     chipClass: "bg-gold text-[#1c1c1c] hover:bg-[#c2af8c]",
+    secondaryClass: "border border-gold/60 text-ink/70 hover:border-gold",
+    swatchClass: "border border-gold/70",
   },
+};
+
+export const categoryLabels: Record<EventCategory, string> = {
+  meeting: "Meeting",
+  board: "Board Meeting",
+  reading: "Reading Group",
+  other: "Other",
+};
+
+/**
+ * Small text glyph shown before the title on the grid chip, for categories
+ * that need an extra non-color cue beyond the outline treatment. Currently
+ * just "board", so it can't be mistaken for a regular meeting even by
+ * someone who ignores color/weight entirely.
+ */
+export const categoryGlyph: Partial<Record<EventCategory, string>> = {
+  board: "◆",
 };
 
 export type MeetingType =

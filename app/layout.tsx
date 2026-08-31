@@ -22,7 +22,12 @@ export const metadata: Metadata = {
   title: "Madison Philosophical Society",
   description:
     "MPS is the University of Wisconsin-Madison's student-run philosophy club, dedicated to philosophical discourse and community-building.",
+  verification: {
+    google: 'googlee85ce95e73d90dd2',
+  },
+
 };
+
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (

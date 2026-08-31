@@ -5,7 +5,9 @@ import { motion, AnimatePresence } from "motion/react";
 import type { CalendarEvent } from "@/lib/googleCalendar";
 import {
   categorizeEvent,
+  categoryGlyph,
   categoryStyles,
+  cleanEventTitle,
   parseMeetingType,
   meetingTypeDotColor,
 } from "@/lib/eventCategory";
@@ -194,38 +196,52 @@ export default function CalendarGrid({
               {cell.day}
             </p>
             <div className="flex flex-col gap-0.5 sm:gap-1">
-              {cell.events.map((event) => {
-                const category = categorizeEvent(event.title);
-                const { meetingType } = parseMeetingType(event.description);
-                return (
-                  <button
-                    key={event.id}
-                    type="button"
-                    onClick={() => onSelectEvent(event)}
-                    className={`relative cursor-pointer overflow-hidden [text-overflow:clip] rounded-[4px] py-0.5 pr-2 pl-1 text-left font-mono text-9 whitespace-nowrap italic transition-colors duration-200 sm:truncate sm:py-1 sm:pr-4 sm:pl-1.5 sm:text-11 sm:[text-overflow:ellipsis] ${categoryStyles[category].chipClass}`}
-                  >
-                    {event.title}
-                    {meetingType && (
-                      <>
-                        <span
-                          aria-hidden
-                          className="absolute inset-y-0 left-0 w-[3px] sm:hidden"
-                          style={{
-                            backgroundColor: meetingTypeDotColor[meetingType],
-                          }}
-                        />
-                        <span
-                          aria-hidden
-                          className="absolute top-1/2 right-1.5 hidden size-[6px] -translate-y-1/2 rounded-full sm:block"
-                          style={{
-                            backgroundColor: meetingTypeDotColor[meetingType],
-                          }}
-                        />
-                      </>
-                    )}
-                  </button>
-                );
-              })}
+              {[...cell.events]
+                .sort((a, b) => {
+                  const aIsMeeting = categorizeEvent(a.title) === "meeting";
+                  const bIsMeeting = categorizeEvent(b.title) === "meeting";
+                  if (aIsMeeting === bIsMeeting) return 0;
+                  return aIsMeeting ? -1 : 1;
+                })
+                .map((event) => {
+                  const category = categorizeEvent(event.title);
+                  const isFeatured = category === "meeting";
+                  const glyph = categoryGlyph[category];
+                  const { meetingType } = parseMeetingType(event.description);
+                  return (
+                    <button
+                      key={event.id}
+                      type="button"
+                      onClick={() => onSelectEvent(event)}
+                      className={`relative cursor-pointer overflow-hidden [text-overflow:clip] rounded-[4px] text-left font-mono whitespace-nowrap transition-colors duration-200 sm:[text-overflow:ellipsis] ${
+                        isFeatured
+                          ? "py-1 pr-3 pl-1.5 text-10 font-semibold not-italic sm:truncate sm:py-1.5 sm:pr-4 sm:pl-2 sm:text-13"
+                          : "py-0.5 pr-2 pl-1 text-9 italic sm:truncate sm:py-1 sm:pr-4 sm:pl-1.5 sm:text-11"
+                      } ${isFeatured ? categoryStyles[category].chipClass : categoryStyles[category].secondaryClass}`}
+                    >
+                      {glyph && `${glyph} `}
+                      {cleanEventTitle(event.title)}
+                      {meetingType && (
+                        <>
+                          <span
+                            aria-hidden
+                            className="absolute inset-y-0 left-0 w-[3px] sm:hidden"
+                            style={{
+                              backgroundColor: meetingTypeDotColor[meetingType],
+                            }}
+                          />
+                          <span
+                            aria-hidden
+                            className="absolute top-1/2 right-1.5 hidden size-[6px] -translate-y-1/2 rounded-full sm:block"
+                            style={{
+                              backgroundColor: meetingTypeDotColor[meetingType],
+                            }}
+                          />
+                        </>
+                      )}
+                    </button>
+                  );
+                })}
             </div>
           </div>
         ))}
