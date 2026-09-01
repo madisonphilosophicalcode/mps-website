@@ -9,7 +9,10 @@ import { CALENDAR_SUBSCRIBE_URL } from "@/lib/googleCalendar";
 import { getCurrentTerm } from "@/lib/semester";
 
 export const metadata: Metadata = {
-  title: "Meetings | Madison Philosophical Society",
+  title: "Meetings & Calendar",
+  description:
+    "When and where the Madison Philosophical Society meets at UW-Madison. Weekly philosophy discussions, talks, and debates open to all students, plus our full event calendar.",
+  alternates: { canonical: "/calendar" },
 };
 
 export default function MeetingsPage() {

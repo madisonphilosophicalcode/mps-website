@@ -17,17 +17,32 @@ const jetBrainsMono = JetBrains_Mono({
   style: ["normal", "italic"],
 });
 
+const description =
+  "Madison Philosophical Society (MPS) is the University of Wisconsin-Madison's student-run philosophy club, dedicated to philosophical discourse and community-building.";
+
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
-  title: "Madison Philosophical Society",
-  description:
-    "MPS is the University of Wisconsin-Madison's student-run philosophy club, dedicated to philosophical discourse and community-building.",
-  verification: {
-    google: 'googlee85ce95e73d90dd2',
+  title: {
+    default: "Madison Philosophical Society",
+    template: "%s | Madison Philosophical Society",
   },
-
+  description,
+  applicationName: "Madison Philosophical Society",
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    siteName: "Madison Philosophical Society",
+    title: "Madison Philosophical Society",
+    description,
+    url: "/",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Madison Philosophical Society",
+    description,
+  },
 };
-
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (

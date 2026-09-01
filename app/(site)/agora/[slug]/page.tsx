@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import AgoraArticleSection from "@/components/agora/AgoraArticleSection";
@@ -10,6 +11,53 @@ import { slugify } from "@/lib/slug";
 export async function generateStaticParams() {
   const issues = await getAgoraIssues();
   return issues.map((issue) => ({ slug: issue.slug }));
+}
+
+export async function generateMetadata(
+  props: PageProps<"/agora/[slug]">,
+): Promise<Metadata> {
+  const { slug } = await props.params;
+  const issue = await getAgoraIssueBySlug(slug);
+
+  if (!issue) return { title: "Issue Not Found" };
+
+  // issue titles usually already read "Agora Spring 2026", so only append the
+  // edition when it is genuinely missing
+  const edition = [issue.season, issue.year].filter(Boolean).join(" ");
+  const title =
+    edition && !issue.title.toLowerCase().includes(edition.toLowerCase())
+      ? `${issue.title} (${edition})`
+      : issue.title;
+
+  // prefer the editor-written teaser, fall back to author names, then a generic line
+  const authors = (issue.articles ?? [])
+    .map((article) => article.author)
+    .filter(Boolean);
+  const description =
+    issue.topicsTeaser ??
+    (authors.length > 0
+      ? `${title}, the undergraduate philosophy journal of the Madison Philosophical Society at UW-Madison. Featuring work by ${authors.join(", ")}.`
+      : `${title}, the undergraduate philosophy journal of the Madison Philosophical Society at UW-Madison.`);
+
+  const cover = issue.coverImage
+    ? urlFor(issue.coverImage).width(1200).height(630).fit("crop").url()
+    : undefined;
+
+  return {
+    title,
+    description,
+    alternates: { canonical: `/agora/${slug}` },
+    openGraph: {
+      type: "article",
+      title,
+      description,
+      url: `/agora/${slug}`,
+      ...(cover && {
+        images: [{ url: cover, width: 1200, height: 630, alt: title }],
+      }),
+    },
+    ...(cover && { twitter: { card: "summary_large_image", images: [cover] } }),
+  };
 }
 
 export default async function AgoraIssuePage(

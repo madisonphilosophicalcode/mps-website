@@ -1,6 +1,8 @@
 import CalendarView from "@/components/calendar/CalendarView";
+import JsonLd from "@/components/JsonLd";
 import { getEventsInRange } from "@/lib/googleCalendar";
 import { getCurrentTerm } from "@/lib/semester";
+import { eventListSchema } from "@/lib/structuredData";
 
 export default async function MeetingsCalendarSection() {
   const term = getCurrentTerm();
@@ -16,8 +18,11 @@ export default async function MeetingsCalendarSection() {
     }
   }
 
+  const eventSchema = eventListSchema(events);
+
   return (
     <>
+      {eventSchema && <JsonLd data={eventSchema} />}
       {!apiKeyConfigured && (
         <p className="text-center font-mono text-sm text-ink/70 italic">
           Calendar isn&rsquo;t connected yet &mdash; add a

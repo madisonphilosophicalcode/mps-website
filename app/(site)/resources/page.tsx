@@ -11,7 +11,10 @@ import {
 } from "@/data/resources";
 
 export const metadata: Metadata = {
-  title: "Resources | Madison Philosophical Society",
+  title: "Philosophy Resources",
+  description:
+    "Resources for philosophy students at UW-Madison: declaring the major, degree requirements, faculty and advising contacts, and reading recommendations from the Madison Philosophical Society.",
+  alternates: { canonical: "/resources" },
 };
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
