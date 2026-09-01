@@ -211,11 +211,11 @@ export default function CalendarGrid({
                       key={event.id}
                       type="button"
                       onClick={() => onSelectEvent(event)}
-                      className={`relative cursor-pointer overflow-hidden [text-overflow:clip] rounded-[4px] py-0.5 pr-2 pl-1 text-left font-mono text-9 whitespace-nowrap italic transition-colors duration-200 sm:[text-overflow:ellipsis] ${
+                      className={`relative cursor-pointer overflow-hidden [text-overflow:clip] rounded-[4px] py-0.5 pr-2 pl-1 text-left font-mono text-9 whitespace-nowrap italic transition-colors duration-200 sm:truncate sm:py-1 sm:pr-4 sm:pl-1.5 sm:text-11 sm:[text-overflow:ellipsis] ${
                         isFeatured
-                          ? "sm:truncate sm:py-1.5 sm:pr-4 sm:pl-2 sm:text-13 sm:font-semibold sm:not-italic"
-                          : "sm:truncate sm:py-1 sm:pr-4 sm:pl-1.5 sm:text-11"
-                      } ${isFeatured ? categoryStyles[category].chipClass : categoryStyles[category].secondaryClass}`}
+                          ? `sm:font-semibold sm:not-italic ${categoryStyles[category].chipClass}`
+                          : categoryStyles[category].secondaryClass
+                      }`}
                     >
                       {cleanEventTitle(event.title)}
                       {meetingType && (
