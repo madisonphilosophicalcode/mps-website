@@ -55,9 +55,9 @@ export interface CategoryStyle {
 
 export const categoryStyles: Record<EventCategory, CategoryStyle> = {
   meeting: {
-    chipClass: "bg-cream text-ink border border-ink/25 hover:bg-[#d9d2c2]",
+    chipClass: "bg-ink text-bg hover:opacity-90",
     secondaryClass: "border border-ink/40 text-ink/70 hover:border-ink",
-    swatchClass: "bg-cream border border-ink/40",
+    swatchClass: "bg-ink",
   },
   board: {
     chipClass: "bg-navy text-cream hover:bg-[#3f5c78]",
@@ -81,16 +81,6 @@ export const categoryLabels: Record<EventCategory, string> = {
   board: "Board Meeting",
   reading: "Reading Group",
   other: "Other",
-};
-
-/**
- * Small text glyph shown before the title on the grid chip, for categories
- * that need an extra non-color cue beyond the outline treatment. Currently
- * just "board", so it can't be mistaken for a regular meeting even by
- * someone who ignores color/weight entirely.
- */
-export const categoryGlyph: Partial<Record<EventCategory, string>> = {
-  board: "◆",
 };
 
 export type MeetingType =

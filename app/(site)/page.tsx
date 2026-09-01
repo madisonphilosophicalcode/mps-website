@@ -44,15 +44,24 @@ export default function Home() {
 
       <section className="flex w-full flex-col items-center px-6 py-16 md:px-3">
         <div className="flex w-full max-w-[1200px] flex-col items-start gap-8 rounded-3xl border border-ink/15 p-8 sm:p-12 md:p-16">
-          <h2 className="font-serif text-26 tracking-[3px] text-ink italic sm:text-4xl sm:tracking-[5.4px]">
-            About MPS
-          </h2>
+          <h1 className="font-serif text-26 tracking-[3px] text-ink italic sm:text-4xl sm:tracking-[5.4px]">
+            About Madison Philosophical Society
+          </h1>
           <p className="max-w-[1126px] font-mono text-13 tracking-[1px] text-ink italic sm:text-base sm:tracking-[2.4px]">
-            MPS is the University of Wisconsin-Madison&rsquo;s student-ran
-            philosophy club. We have weekly philosophical discussion, including
-            presentations, talks, discussions, debates, and more. We provide a
-            dedicated weekly time not only to philosophize, but to socialize
-            with like-minded thinkers. We also promote and host social events.
+            Madison Philosophical Society (MPS) is the University of
+            Wisconsin-Madison&rsquo;s student-run philosophy club. We have
+            weekly philosophical discussion, including presentations, talks,
+            discussions, debates, and more. We provide a dedicated weekly time
+            not only to philosophize, but to socialize with like-minded
+            thinkers. We also promote and host social events.
+          </p>
+          <p className="max-w-[1126px] font-mono text-13 tracking-[1px] text-ink italic sm:text-base sm:tracking-[2.4px]">
+            We meet{" "}
+            <strong className="font-bold text-maroon">
+              Mondays from 7&ndash;8&thinsp;PM in 5193 Helen C. White
+            </strong>{" "}
+            during the fall and spring semesters. Every UW&ndash;Madison student
+            is welcome, and no philosophy background is required.
           </p>
           <Button href="/calendar">Check Meetings Here</Button>
         </div>

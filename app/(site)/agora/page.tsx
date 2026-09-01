@@ -5,7 +5,10 @@ import AgoraIssuesGrid from "@/components/agora/AgoraIssuesGrid";
 import AgoraIssuesSkeleton from "@/components/agora/AgoraIssuesSkeleton";
 
 export const metadata: Metadata = {
-  title: "Agora | Madison Philosophical Society",
+  title: "Agora — Undergraduate Philosophy Journal",
+  description:
+    "Agora is the undergraduate philosophy journal of the Madison Philosophical Society at UW-Madison. Read every issue, featuring original work by undergraduate philosophers.",
+  alternates: { canonical: "/agora" },
 };
 
 export default function AgoraPage() {

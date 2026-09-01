@@ -4,7 +4,10 @@ import BoardSection from "@/components/board/BoardSection";
 import { getBoards } from "@/lib/sanity/queries";
 
 export const metadata: Metadata = {
-  title: "About | Madison Philosophical Society",
+  title: "About",
+  description:
+    "Madison Philosophical Society (MPS) is the University of Wisconsin-Madison's student-run philosophy club. Meet our board and learn how we build community around philosophical inquiry.",
+  alternates: { canonical: "/about" },
 };
 
 export default async function AboutPage() {

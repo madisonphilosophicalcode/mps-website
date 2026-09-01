@@ -16,7 +16,7 @@ event **title**, via an ordered list of rules in `categorizeEvent`
 | ----------------------------------- | --------- | ---------- |
 | `reading group`                     | `reading` | maroon     |
 | `board meeting`                     | `board`   | navy       |
-| `meeting` (and not the above)       | `meeting` | cream card |
+| `meeting` (and not the above)       | `meeting` | inverted (dark tag on light theme, light tag on dark theme) |
 | anything else (e.g. Movie Night)    | `other`   | gold       |
 
 Rules are checked top to bottom and the first match wins, so more specific
@@ -35,14 +35,23 @@ Flagship meetings are, by a wide margin, the most important event category
 comparison). The chip styling reflects that on purpose, not just via color:
 
 - **Meeting** events render "featured": solid fill, bigger text, bold, not
-  italic — `categoryStyles.meeting.chipClass`. The fill is `cream` with dark
-  `ink` text and a visible `border-ink/25` — note the border is load-bearing
-  here, not decorative: `--color-cream` and `--color-bg` are the *same hex*
-  in light mode, so without a border the chip would be invisible, blending
-  straight into the page. (An earlier version used `--color-panel`, which is
-  also the site's general chrome/background color, so it had the same
-  blending problem in reverse; a dedicated bold `forest` green was tried
-  after that and also dropped, in favor of this quieter cream-card look.)
+  italic — `categoryStyles.meeting.chipClass` is just `bg-ink text-bg`. `ink`
+  and `bg` are the site's core adaptive color pair (already used for the
+  page body and Navbar, `bg-bg text-ink`) and are opposites by definition —
+  `ink` is dark in light mode / light in dark mode, `bg` is the reverse. The
+  chip uses them flipped, so it's always the inverse of the page: a dark tag
+  on the light theme, a light tag on the dark theme. No hardcoded hex, no
+  manual light/dark tuning, and no risk of the fill and text (or the fill
+  and the page) ever coinciding, since `ink` and `bg` are guaranteed never
+  equal by how the whole site's theme already works.
+  A few things were tried and dropped before landing here, each with a real
+  bug found by actually checking both themes rather than just light mode:
+  `--color-panel` (also the site's chrome background color — chip blended
+  into the page), a dedicated bold `forest` green (worked, but was louder
+  than wanted), literal `cream` fill with fixed dark text (`cream` and `bg`
+  are the *same hex* in light mode, so the chip was invisible against the
+  page), and `cream` fill with theme-adaptive `text-ink` (`ink` in dark mode
+  is *also* the same hex as `cream`, so the label disappeared in dark mode).
   Meeting is still the only category rendered with a solid fill — everything
   else below is an outline with no fill at all — so it's still visually
   distinct by construction, just via fill-vs-outline rather than a loud hue.
@@ -55,13 +64,15 @@ comparison). The chip styling reflects that on purpose, not just via color:
   than meeting despite being the least important category — a classic
   pre-attentive pop-out effect from being the one unique hue in the set.
   Weight/fill doesn't have that failure mode the way color does.
-- **Board** additionally gets a small `◆` glyph before its title
-  (`categoryGlyph` in `lib/eventCategory.ts`) so it can't be mistaken for a
-  regular meeting even by someone ignoring color and weight entirely — an
-  earlier idea of giving board the *same* solid panel fill as meeting (just
-  a tiny marker to tell them apart) was rejected for the opposite reason:
-  it risked looking so similar to a real meeting that someone could
-  mistake one for the other.
+  (A small `◆` glyph on board was tried on top of this for extra
+  disambiguation and dropped again — the outline + size difference already
+  reads as distinct enough on its own, so the glyph was just noise.)
+- The featured meeting size/weight bump above is **desktop-only**
+  (`sm:` and up). On mobile the grid cells are already tight, and a bigger,
+  bolder chip specifically on the smallest screens looked cramped rather
+  than emphasized — so on mobile, meeting is styled identically in
+  size/weight to every other chip, and is distinguished purely by the solid
+  `bg-ink`/outline contrast described above.
 - On any day with a meeting event, it's always sorted to the front of that
   day's stack in the grid, regardless of time — but only relative to other
   events on the *same day*; a day with only one event is unaffected. This
